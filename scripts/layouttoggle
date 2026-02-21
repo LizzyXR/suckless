@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# store last used layout
+LAYOUT_FILE="/tmp/dwmblocks_layout"
+#[ -f "$LAYOUT_FILE" ] || echo "" > "$LAYOUT_FILE" # bad practice, overwrites & does not check if file exists
+[ -f "$LAYOUT_FILE" ] || touch "$LAYOUT_FILE"
+current=$(cat "$LAYOUT_FILE")
+
+# this script works by putting the primary layout in the first position every time, tricking X11 into thinking it's always on the primary layout, bypassing the group index bug.
+
+case "$current" in
+	0)
+        setxkbmap -layout ru,us,pl -variant ,,qwertz -option "" -option "ctrl:ctrl_across_layouts"
+		new_idx=1
+		#msg="🇺🇸 --> 🇷🇺"
+		;;
+	1)
+        setxkbmap -layout pl,us,ru -variant qwertz,, -option "" -option "ctrl:ctrl_across_layouts"
+		new_idx=2
+		#msg="🇷🇺 --> 🇵🇱"
+		;;
+	*)
+        setxkbmap -layout us,ru,pl -variant ,,qwertz -option "" -option "ctrl:ctrl_across_layouts"
+		new_idx=0
+		#msg="🇵🇱 --> 🇺🇸"
+		;;
+esac
+
+echo "$new_idx" > "$LAYOUT_FILE"
+sync "$LAYOUT_FILE" # make sure it's written to disk before signaling dwmblocks
+#dunstify "$msg"
+
+# updating dwmblocks when layout has changed
+pkill -RTMIN+10 dwmblocks

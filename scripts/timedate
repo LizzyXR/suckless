@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+printf "%(%A, %B %e, %_I:%M%P)T\\n"
+
+case $BLOCK_BUTTON in
+	1) notify-send -t 60000 "$(cal)" ;;
+	3) setsid -w -f "$TERMINAL" -e calcurse ;; 
+	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac

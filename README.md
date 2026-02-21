@@ -8,5 +8,3 @@ git clone https://github.com/LizzyXR/suckless
 cd suckless/xxxx
 sudo make clean install
 ```
-
-#### note: i recommend to put the suckless programs inside ~/.local/src

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# read the index, default to 0 if file is missing
+idx=$(cat /tmp/dwmblocks_layout 2>/dev/null || echo "0")
+
+if [ -z "$idx" ]; then idx="0"; fi # make sure idx != 0, then set it to fallback (US layout)
+
+case "$idx" in
+	0) echo "[US]" ;;
+	1) echo "[RU]" ;;
+	2) echo "[PL]" ;;
+	3) echo "[US]" ;;
+esac

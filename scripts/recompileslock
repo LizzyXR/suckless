@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+cd ~/.local/bin/src/slock
+
+sudo make clean install

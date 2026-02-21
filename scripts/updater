@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+dunstify "Update" "Checking for updates..."
+UPDATED=0
+
+PACMAN_OUT=$(sudo pacman -Syu --noconfirm 2>&1)
+PACMAN_COUNT=$(echo "$PACMAN_OUT" | grep -c "upgrading")
+if [ "$PACMAN_COUNT" -gt 0 ]; then
+    dunstify "pacman says" "Updated $PACMAN_COUNT package(s)"
+    UPDATED=1
+else
+    dunstify "pacman says" "Nothing to update"
+fi
+
+YAY_OUT=$(yay -Sua --noconfirm 2>&1)
+YAY_COUNT=$(echo "$YAY_OUT" | grep -c "upgrading")
+if [ "$YAY_COUNT" -gt 0 ]; then
+    dunstify "yay says" "Updated $YAY_COUNT package(s)"
+    UPDATED=1
+else
+    dunstify "yay says" "Nothing to update"
+fi
+
+if [ "$UPDATED" -eq 1 ]; then
+    dunstify "Update" "Upgraded successfully!"
+else
+	dunstify "Update" "Everything is already up to date :)"
+fi

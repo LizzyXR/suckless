@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+LOCATION="venlo"
+URL="wttr.in/${LOCATION}"
+CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
+
+# get current temperature (numbers only, no emoji)
+getcurrenttemp() {
+    curl -sfSL "$URL?format=1" \
+		| sed 's/\x1b\[[0-9;]*m//g' \
+        | sed 's/[^0-9°C+-]//g'
+}
+
+# get current temperature (number + emoji)
+#getcurrenttemp() {
+#    curl -sfSL "$URL?format=1" \
+#        | sed 's/[+]//g' \
+#		| sed 's/  */ /g' \
+#		| sed 's/^ //' \
+#        | sed 's/\x1b\[[0-9;]*m//g'
+#}
+
+# get full forecast and save locally
+getforecast() {
+    timeout --signal=1 2s curl -sf "$URL" > "$CACHE" || exit 1
+}
+
+# only update forecast once per day
+checkforecast() {
+    [ -s "$CACHE" ] && [ "$(stat -c %y "$CACHE" 2>/dev/null | cut -d' ' -f1)" = "$(date '+%Y-%m-%d')" ]
+}
+
+# precipitation chance (line 16)
+getprecipchance() {
+    sed -n '16p' "$CACHE" | grep -wo "[0-9]*%" | sort -rn | head -1
+}
+
+# daily low/high (line 13)
+getdailyhighlow() {
+    sed -n '13p' "$CACHE" \
+        | grep -o "m\([-+]\)*[0-9]\+" \
+        | sed 's/[+m]//g' \
+        | sort -g \
+        | awk 'NR==1{low=$1} END{print low, $1}' # low high
+}
+
+# show weather for bar
+showweather() {
+    [ -f "$CACHE" ] || getforecast
+    PREC=$(getprecipchance)
+    read LOW HIGH <<< $(getdailyhighlow)
+    CURRENT=$(getcurrenttemp)
+    #printf "P: %s L: %s° H: %s° C: %s°\n" "$PREC" "$LOW" "$HIGH" "$CURRENT"
+	printf "$CURRENT"
+}
+
+# block click actions
+case "$BLOCK_BUTTON" in
+    1) setsid -f "$TERMINAL" -e less -Sf "$CACHE" ;; # left click: full forecast
+    2) getforecast && dunstify "🌈 Weather" "Forecast file updated" ;; # middle click: refresh
+    3) notify-send "🌈 Weather forecast" \
+        "Left click: full forecast
+Middle click: refresh
+P: Chance of rain/snow
+L: Daily low
+H: Daily high
+C: Current temperature" ;;
+    6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+showweather # show weather in bar

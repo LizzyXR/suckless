@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Paths to PIDs
+RECPID="/tmp/recpid"
+AUDPID="/tmp/audpid"
+
+record() {
+    # Toggle mic
+    amixer set Capture toggle
+
+    # Screen recording (adjust your preferred ffmpeg command)
+    ffmpeg -s 1920x1080 -f x11grab -r 30 -i :0.0 -c:v h264 -qp 0 "$HOME/video_$(date '+%a__%b%d__%H_%M_%S').mkv" &
+    echo $! > "$RECPID"
+
+    # Audio recording
+    ffmpeg -f alsa -i default -af "afftdn=nf=-75" "$HOME/audio_$(date '+%a__%b%d__%H_%M_%S').wav" &
+    echo $! > "$AUDPID"
+
+    # Signal dwmblocks to refresh
+    pkill -RTMIN+3 dwmblocks
+
+    # Notification
+    notify-send -t 500 -h string:bgcolor:#a3be8c "Recording started & mic toggled"
+}
+
+end() {
+    # Stop recording and remove PIDs
+    kill -15 "$(cat "$RECPID")" "$(cat "$AUDPID")" 2>/dev/null
+    rm -f "$RECPID" "$AUDPID"
+
+    # Toggle mic back
+    amixer set Capture toggle
+
+    # Signal dwmblocks to refresh
+    pkill -RTMIN+3 dwmblocks
+
+    # Notification
+    notify-send -t 500 -h string:bgcolor:#bf616a "Recording ended & mic toggled"
+}
+
+# Decide whether to start or end recording
+if [[ -f "$RECPID" ]]; then
+    end
+else
+    record
+fi
+
+exit 0
+
