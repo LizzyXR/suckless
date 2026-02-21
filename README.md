@@ -6,5 +6,5 @@
 ```
 git clone https://github.com/LizzyXR/suckless
 cd suckless/xxxx
-sudo make install
+sudo make clean install
 ```
