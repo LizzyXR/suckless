@@ -1,13 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// OLD BLOCKS
-/*
-X("", "aurora", 1800, 7)     \
-X("", "musicplaying", 0, 11) \
-*/
-
-
 // String used to delimit block outputs in the status.
 #define DELIMITER " | "
 
