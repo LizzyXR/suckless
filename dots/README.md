@@ -2,5 +2,5 @@
 
 ### to install:
 ```
-cp -r dots/* ~/.config/ && rm -rf ~/.config/README.md
+cd suckless && cp -r dots/* ~/.config/ && rm -rf ~/.config/README.md && cd ~/
 ```
