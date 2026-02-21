@@ -1,5 +1,5 @@
 ## simple terminal
-My very simple fork of st, comes with no guarantees or warranties <sub>(to be clear: this means things may not work as expected, or at all)</sub> :^)
+My very simple fork of st, comes with no guarantees or warranties
 
 ## patches added
 * alpha & changealpha (transparency)
@@ -17,7 +17,7 @@ My very simple fork of st, comes with no guarantees or warranties <sub>(to be cl
 
 ## how install pls?
 ```
-git clone https://github.com/BreadOnPenguins/st
+git clone https://github.com/LizzyXR/suckless
 cd st
 sudo make install
 ```
