@@ -39,7 +39,7 @@ sudo make clean install
   - ```mod + shift + backspace``` to fully exit
 
 
-I use [dwmblocks-async](https://github.com/UtkarshVerma/dwmblocks-async) for my statusbar ([bar scripts](https://github.com/LizzyXR/suckless/scripts)), included in ```~/.xprofile``` with ```exec dwmblocks```.
+I use [dwmblocks-async](https://github.com/UtkarshVerma/dwmblocks-async) for my statusbar ([bar scripts](https://github.com/LizzyXR/suckless/scripts)), included in ```~/.xprofile``` with ```exec dwmblocks &```.
 
 
 ## colors, other stuff:
