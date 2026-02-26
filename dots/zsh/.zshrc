@@ -64,6 +64,12 @@ alias ngdir="cd /usr/share/nginx"
 
 alias spotify-fix="bash <(curl -sSL https://spotx-official.github.io/run.sh)"
 
+function paste() {
+    local file=${1:-/dev/stdin}
+    curl --data-binary @${file} https://paste.rs/
+    echo
+}
+
 # binds
 bindkey "^a" beginning-of-line
 bindkey "^e" end-of-line
