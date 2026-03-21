@@ -1,6 +1,4 @@
 /*
-bread's dwm build
-
 patches applied (incl. some slight changes):
 
 dwm-bartoggle-keybinds-6.4.diff ----- toggle pieces of the bar
