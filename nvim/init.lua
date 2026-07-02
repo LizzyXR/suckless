@@ -83,7 +83,7 @@ local mason_lsp_ok, mason_lsp = pcall(require, "mason-lspconfig")
 if mason_ok and mason_lsp_ok then
     mason.setup()
     mason_lsp.setup({
-        ensure_installed = { "clangd", "lua_ls", "ts_ls", "html" }
+        ensure_installed = { "lua_ls" }
     })
 end
 
@@ -140,20 +140,6 @@ setup_server("lua_ls")
 setup_server("ts_ls")
 setup_server("html")
 
--- 4. Treesitter Syntax
-local ts_ok, ts_configs = pcall(require, "nvim-treesitter.configs")
-if ts_ok then
-    ts_configs.setup({
-        ensure_installed = { "c", "cpp", "lua", "typescript", "javascript", "html", "python" },
-        highlight = { enable = true },
-    })
-end
-
-require("nvim-treesitter.configs").setup({
-	ensure_installed = { "lua", "typescript", "javascript", "html", "clangd", "python" },
-	highlight = { enabled = true },
-})
-
 --[[cmp.setup({
 	snippet = {
 		expand = function(args) require("luasnip").lsp_expand(args.body) end,
@@ -193,7 +179,7 @@ require("plugins.lualine")
 require("plugins.nvim-lint")
 require("plugins.nvim-tree")
 require("plugins.render-markdown")
-require("plugins.treesitter")
+--require("plugins.treesitter")
 require("plugins.twilight")
 require("plugins.which-key")
 
